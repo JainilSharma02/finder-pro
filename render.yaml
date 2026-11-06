@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: lead-finder-pro-backend
+    env: node
+    repo: https://github.com/JainilSharma02/lead-finder-.git
+    branch: main
+    buildCommand: npm install && npm run dev
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "5000"
+      - key: MONGO_URI
+        value: "mongodb://mongodb:27017/lead_finder_pro"
+      - key: JWT_SECRET
+        value: "change_this_to_a_long_random_string"
+      - key: JWT_EXPIRES_IN
+        value: "7d"
+      - key: JWT_REFRESH_SECRET
+        value: "change_this_to_another_long_random_string"
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: "30d"
+      - key: LEAD_DATA_PROVIDER
+        value: "google_scrape"
+      - key: CLIENT_URL
+        value: "https://lead-finder-pro-frontend.onrender.com"
+    plan: free
+    autoDeploy: true
+
+  - type: static
+    name: lead-finder-pro-frontend
+    env: static
+    repo: https://github.com/JainilSharma02/lead-finder-.git
+    branch: main
+    staticPublishPath: client/dist
+    buildCommand: cd client && npm install && npm run build
+    envVars:
+      - key: VITE_API_URL
+        value: "https://lead-finder-pro-backend.onrender.com"
+    plan: free
+    autoDeploy: true
